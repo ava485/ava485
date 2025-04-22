@@ -1,3 +1,4 @@
+![IMG_20250422_083048_039](https://github.com/user-attachments/assets/cf6da1b5-f76a-4e1e-aecc-8641b066402a)
 import logging from telegram import Update, BotCommand from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes from trader import IQOptionTrader from scheduler import SinalScheduler from estrategias import EstrategiaExecutor from resultado_manager import ResultadoManager
 
 Ative o log 
