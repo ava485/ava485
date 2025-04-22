@@ -1,6 +1,3 @@
-import logging from telegram import Update, BotCommand from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes from trader import IQOptionTrader from scheduler import SinalScheduler from estrategias import EstrategiaExecutor from resultado_manager import ResultadoManager
-
-Ative o log 
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
@@ -22,29 +19,13 @@ async def estrategia_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE): if
 
 async def sinal(update: Update, context: ContextTypes.DEFAULT_TYPE): if len(context.args) != 3: await update.message.reply_text("Use assim: /sinal EURUSD M5 CALL") return par, tempo, direcao = context.args estrategia.executar(par, tempo, direcao.upper()) await update.message.reply_text("Entrada executada!")
 
-async def agendar(update: Update, context: ContextTypes.DEFAULT_TYPE): if len(context.args) != 4: await update.message.reply_text("Use assim: /agendar EURUSD M5 CALL 14:30") return par, tempo, direcao, horario = context.args scheduler.adicionar_sinal(par, tempo, direcao, horario) await update.message.reply_text(f"Sinal agendado: {par} {tempo} {direcao} {horario}")
+async def agendar(update: Update, context: ContextTypes.DEFAULT_TYPE): if len(context.args) != 4: await update.message.reply_text("Use assim: /agendar EURUSD M5 CALL 14:30") return par, tempo, direcao, horario = context.args scheduler.adicionar_sinal(par,EURUSD-tempo, direcao, horario) await update.message.reply_text(f"Sinal agendado: {par} EURUSD {tempo}M1_M5_M15{CALL PUT} {horario}
 
 async def meussinais(update: Update, context: ContextTypes.DEFAULT_TYPE): sinais = scheduler.listar_sinais() if not sinais: await update.message.reply_text("Nenhum sinal agendado no momento.") return resposta = "Sinais agendados:\n" for s in sinais: resposta += f"{s['par']} {s['tempo']}M {s['direcao']} às {s['horario']}\n" await update.message.reply_text(resposta)
 
-async def cancelar(update: Update, context: ContextTypes.DEFAULT_TYPE): scheduler.cancelar_todos() await update.message.reply_text("Todos os sinais foram cancelados.")
-
-async def resultado(update: Update, context: ContextTypes.DEFAULT_TYPE): await update.message.reply_text(resultados.resumo())
-
-async def limpar(update: Update, context: ContextTypes.DEFAULT_TYPE): resultados.limpar() await update.message.reply_text("Histórico de resultados limpo.")
-
-Inicializando o bot 
-
-app = ApplicationBuilder().token("COLOQUE_SEU_TOKEN_AQUI").build()
-
-Adicionando handlers 
-
-app.add_handler(CommandHandler("start", start)) app.add_handler(CommandHandler("ajuda", ajuda)) app.add_handler(CommandHandler("configurar", configurar)) app.add_handler(CommandHandler("modo", modo)) app.add_handler(CommandHandler("estrategia", estrategia_cmd)) app.add_handler(CommandHandler("sinal", sinal)) app.add_handler(CommandHandler("agendar", agendar)) app.add_handler(CommandHandler("meussinais", meussinais)) app.add_handler(CommandHandler("cancelar", cancelar)) app.add_handler(CommandHandler("resultado", resultado)) app.add_handler(CommandHandler("limpar", limpar))
+async def cancelar(update: Update, context: ContextTypes.DEFAULT_TYPE): scheduler.cancelar_todos() await update.message.reply_text("Todos os sinais foram cancelados
 
 Define os comandos no menu do Telegram 
 
-bot_commands = [ BotCommand("start", "Inicia o bot"), BotCommand("ajuda", "Ver lista de comandos"), BotCommand("configurar", "Configurar corretora"), BotCommand("modo", "Alternar entre conta demo/real"), BotCommand("estrategia", "Selecionar estratégia"), BotCommand("sinal", "Enviar sinal manual"), BotCommand("agendar", "Agendar novo sinal"), BotCommand("meussinais", "Ver sinais agendados"), BotCommand("cancelar", "Cancelar todos os sinais"), BotCommand("resultado", "Ver resultados"), BotCommand("limpar", "Limpar resultados") ]
-
-async def set_commands(): await app.bot.set_my_commands(bot_commands)
-
-if name == 'main': import asyncio asyncio.run(set_commands()) app.run_polling()
+bot_commands = [ BotCommand(PARE"Inicia o bot"), BotCommand("ajuda", "Ver lista de comandos"), BotCommand("configurar", "Configurar corretora"), BotCommand("modo", "Alternar entre conta demo/real"), BotCommand("estrategia", "Selecionar estratégia"), BotCommand("sinal", "Enviar sinal manual"), BotCommand("agendar", "Agendar novo sinal"), BotCommand("meussinais", "Ver sinais agendados"), BotCommand("cancelar", "Cancelar todos os sinais"), BotCommand("resultado", "Ver resultados"), BotCommand("limpar", "Limpar resultados") 
 
